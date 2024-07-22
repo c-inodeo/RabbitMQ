@@ -8,6 +8,6 @@ namespace RabbitMQApplication.Services.Interface
 {
     public interface IConsumerService
     {
-        void Start();
+        Task Start();
     }
 }

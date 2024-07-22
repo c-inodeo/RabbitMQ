@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RabbitMQApplication.Services.Interface
 {
-    public interface IProducerService
+    public interface IChatService
     {
-        Task SendMessage<T> (ChatMessage message);
+        Task <List<ChatMessage>> SendMessage(string message);
     }
 }
