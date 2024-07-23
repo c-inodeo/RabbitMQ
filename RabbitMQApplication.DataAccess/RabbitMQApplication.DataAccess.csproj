@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RabbitMQApplication.Models\RabbitMQApplication.Models.csproj" />
-    <ProjectReference Include="..\RabbitMQApplication.Services\RabbitMQApplication.Services.csproj" />
   </ItemGroup>
 
 </Project>

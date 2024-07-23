@@ -18,10 +18,10 @@ namespace RabbitMQApplication.Services
             var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 
-            channel.QueueDeclare(
-               queue: "Chat Messages",
+            channel.ExchangeDeclare(
+               exchange: "Chat Messages",
+               type: ExchangeType.Fanout,
                durable: false,
-               exclusive: false,
                autoDelete: false,
                arguments: null
            );
@@ -35,6 +35,7 @@ namespace RabbitMQApplication.Services
                  basicProperties: null,
                  body: body
              );
+            await Task.CompletedTask;
         }
     }
 }

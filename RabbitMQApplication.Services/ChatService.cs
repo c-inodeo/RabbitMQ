@@ -18,7 +18,7 @@ namespace RabbitMQApplication.Services
         {
             _context = context;
         }
-        public async Task <List<ChatMessage>> SendMessage(string message)
+        public async Task <List<ChatMessage>> SendMessage()
         {
             return await _context.ChatMessages.ToListAsync();
         }

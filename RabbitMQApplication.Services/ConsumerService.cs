@@ -9,16 +9,17 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 using System.Text.Json;
 using RabbitMQApplication.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace RabbitMQApplication.Services
 {
     public class ConsumerService : IConsumerService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IServiceProvider _service;
 
-        public ConsumerService(ApplicationDbContext context)
+        public ConsumerService(IServiceProvider service)
         {
-          _context = context;
+          _service = service;
         }
         public async Task Start()
         {
@@ -44,8 +45,13 @@ namespace RabbitMQApplication.Services
 
                 if (chatMessage != null)
                 {
-                    _context.ChatMessages.Add(chatMessage);
-                    await _context.SaveChangesAsync();
+                    using (var scope = _service.CreateAsyncScope())
+                    {
+                        var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                        _context.ChatMessages.Add(chatMessage);
+                        await _context.SaveChangesAsync();
+                    }
+         
                 }
 
                 Console.WriteLine($"Sample message {chatMessage}");
@@ -56,6 +62,7 @@ namespace RabbitMQApplication.Services
                 autoAck: true,
                 consumer: consumer
             );
+            await Task.CompletedTask;
         }
     }
 }
