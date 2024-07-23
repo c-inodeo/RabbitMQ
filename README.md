@@ -1,1 +1,1 @@
-A simple chat application to showcase produce/consumer process.
+A simple application to showcase produce/consumer process.
