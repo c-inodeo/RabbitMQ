@@ -9,6 +9,6 @@ namespace RabbitMQApplication.Services.Interface
 {
     public interface IChatService
     {
-        Task <List<ChatMessage>> SendMessage();
+        Task <List<ChatMessage>> MessagesToList();
     }
 }

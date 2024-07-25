@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using RabbitMQApplication.Services;
 using RabbitMQApplication.Services.Interface;
 using RabbitMQApplication.DataAccess.Data;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddTransient<IProducerService, ProducerService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddSingleton<IConsumerService, ConsumerService>();
+
+
+builder.Services.AddSignalR();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        ["application/octet-stream"]);
+});
+
 var app = builder.Build();
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -23,8 +34,10 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 var rabbitMQConsumer = app.Services.GetRequiredService<IConsumerService>();
 await rabbitMQConsumer.Start();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -24,7 +24,7 @@ namespace RabbitMQApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var messages = await _chatService.SendMessage();
+            var messages = await _chatService.MessagesToList();
             return View(messages);
         }
         [HttpPost]
